@@ -1,30 +1,27 @@
 //require("dotenv").config({path: "/.env"});
 
-import dotenv from "dotenv";
-import express from "express";
+import dotenv from "dotenv"
 import connectDB from "./db/index.js";
-
-dotenv.config({path: "./.env"});
-
+import express from "express";
 const app = express();
+dotenv.config({
+    path: './.env'
+})
 
-// basic middleware
-app.use(express.json());
 
-const start = async () => {
-    try {
-        await connectDB();
-        const port = process.env.PORT || 8000;
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
-        });
-    } catch (err) {
-        console.error("Failed to start application", err);
-        process.exit(1);
-    }
-};
 
-start();
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
+    })
+})
+.catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
+})
+
+
+
 // First approach writting the connection of db logic in index file itself
 /*
 ( async ()=>{
